@@ -21,7 +21,7 @@
 
 int main()
 {
-	/*
+	
 	std::vector<int> numlist;
 	numlist.reserve(20);
 
@@ -51,17 +51,5 @@ int main()
 	{
 		std::cout << c << ",";
 	}
-	*/
-
-	std::cout << "press enter to start";
-	std::cin.get();
-	std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
-	std::cout << "start\n";
-
-	std::cin.get();
-	std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-	std::cout << (duration.count() / static_cast<double>(1000*1000*1000)) << "s";
-
 	std::cin.get();
 }
