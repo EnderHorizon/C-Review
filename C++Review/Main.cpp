@@ -42,7 +42,7 @@ int main()
 	std::thread thread1([&]() 
 		{
 		std::cout << "\nSort thread id:" << std::this_thread::get_id() << std::endl;
-		sort::BubbleSort(numlist);
+		sort::ShellSort(numlist);
 		});
 	thread1.join();
 
