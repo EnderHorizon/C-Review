@@ -31,31 +31,24 @@ namespace sort
 {
 	//用于vector
 	template<typename Ty>
-	void SelectSort(Ty& array)//选择排序
+	void InsertSort(Ty& array)//插入排序
 	{
-		Timer time("SeletSort");
-		int present = 1;
+		Timer time("InsertSort");
 		int sel = 0;
 		int temp = 0;
-		for (; present < array.size(); ++present)
+		for (int cur = 1; cur < array.size(); ++cur)
 		{
-			if (array[present - 1] > array[present])
+			if (array[cur - 1] > array[cur])
 			{
-				temp = array[present];					//缓存
-				for (; array[sel] > temp;)
+				temp = array[cur];				//缓存
+				sel = cur - 1;
+				while (sel > -1 && array[sel] > temp)
 				{
 					array[sel + 1] = array[sel];
-					if (sel > 0)						//排序区左边界
-						--sel;
-					else
-					{
-						--sel;
-						break;
-					}
+					--sel;
 				}
 				array[sel + 1] = temp;
 			}
-			sel = present;
 		}
 	}
 
@@ -63,20 +56,20 @@ namespace sort
 	void BubbleSort(Ty& array) //冒泡排序
 	{
 		Timer time("BubbleSort");
-		int present = 0;
+		unsigned int cur = 0;
 		int temp = 0;
-		for (int i = 1; (present + i) < array.size(); ++i)
+		for (int i = 1; (cur + i) < array.size(); ++i)
 		{
-			for (; (present + 1) < array.size(); ++present)
+			for (; (cur + 1) < array.size(); ++cur)
 			{
-				if (array[present] > array[present + 1])
+				if (array[cur] > array[cur + 1])
 				{
-					temp = array[present];
-					array[present] = array[present + 1];
-					array[present + 1] = temp;
+					temp = array[cur];
+					array[cur] = array[cur + 1];
+					array[cur + 1] = temp;
 				}
 			}
-			present = 0;
+			cur = 0;
 		}
 	}
 
@@ -84,9 +77,29 @@ namespace sort
 	void ShellSort(Ty& array)
 	{
 		Timer time("ShellSort");
-		
+		unsigned int cur = 0;
+		int sel = 0;
+		int temp = 0;
+		for(unsigned int gap = array.size() / 2; gap > 0; gap /= 2)
+		{
+			cur = 0;
+			for (; (cur + gap) < array.size(); cur += gap)
+			{
+				if (array[cur] > array[cur + gap])
+				{
+					temp = array[cur + gap];
+					array[cur + gap] = array[cur];
+					sel = cur - gap;
+					while (sel > -1 && temp < array[sel])
+					{
+						array[sel + gap] = array[sel];
+						sel -= gap;
+					}
+					array[sel + gap] = temp;
+				}
+			}
+		}
 	}
-	
 };
 
 class Log
