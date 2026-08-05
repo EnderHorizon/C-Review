@@ -1,14 +1,13 @@
 #pragma once
+#include"pch.h"
+
 /*
 Timer
 sort
 String
 Vector
+Matrix
 */
-#include<iostream>
-#include<string>
-#include<vector>
-#include<chrono>
 
 class Timer
 {
@@ -80,10 +79,10 @@ namespace sort
 		unsigned int cur = 0;
 		int sel = 0;
 		int temp = 0;
-		for(unsigned int gap = array.size() / 2; gap > 0; gap /= 2)
+		for(size_t gap = array.size() / 2; gap > 0; gap /= 2)
 		{
 			cur = 0;
-			for (; (cur + gap) < array.size(); cur += gap)
+			for (; (cur + gap) < array.size(); cur += gap)//插入排序
 			{
 				if (array[cur] > array[cur + gap])
 				{
@@ -203,10 +202,7 @@ public:
 	{
 		head_ptr = new Type[m_size];
 	}
-	~array()
-	{
-		delete[] head_ptr;
-	}
+	~array() {delete[] head_ptr;}
 
 	array(const array& other) = delete;  //copyconstructor
 
@@ -218,5 +214,117 @@ public:
 	Type& operator[](unsigned const int& index)
 	{
 		return head_ptr[index];
+	}
+};
+
+class vector
+{
+
+};
+
+class Matrix
+{
+private:
+	size_t m_row;
+	size_t m_col;
+	int* m_matrix;
+public:
+	Matrix(const size_t& row, const size_t& col)
+		:m_row(row), m_col(col)
+	{
+		m_matrix = new int[m_row * m_col];
+	}
+	~Matrix() {delete[] m_matrix;}
+	//重载（）运算符
+	int& operator()(unsigned const int& row, unsigned const int& col) const
+	{
+#ifdef P_DEBUG
+		if (row >= m_row || col >= m_col)
+			throw std::invalid_argument("索引超出数组大小");
+#endif
+		return m_matrix[m_col * row + col];
+	}
+	//深拷贝
+	Matrix(const Matrix& other) = delete;
+
+	//矩阵加法
+	Matrix* operator+(const Matrix& other)
+	{
+#ifdef P_DEBUG
+		if (m_row != other.m_row || m_col != other.m_col)
+			throw std::invalid_argument("矩阵维度不匹配，无法相加");
+#endif
+		Matrix* m = new Matrix(m_row, m_col);
+		for (int i = 0; i < m_row; ++i)
+		{
+			for (int j = 0; j < m_col; ++j)
+			{
+				(*m)(i, j) = (*this)(i, j) + other(i, j);
+			}
+		}
+		return m;
+	}
+	//矩阵减法
+	Matrix* operator-(const Matrix& other)
+	{
+#ifdef P_DEBUG
+		if (m_row != other.m_row || m_col != other.m_col)
+			throw std::invalid_argument("矩阵维度不匹配，无法相减");
+#endif
+		Matrix* m = new Matrix(m_row, m_col);
+		for (int i = 0; i < m_row; ++i)
+		{
+			for (int j = 0; j < m_col; ++j)
+			{
+				(*m)(i, j) = (*this)(i, j) - other(i, j);
+			}
+		}
+		return m;
+	}
+	//矩阵乘法
+	Matrix* operator*(const Matrix& other)
+	{
+#ifdef P_DEBUG
+		if (m_col != other.m_row)
+			throw std::invalid_argument("矩阵无法相乘");
+#endif
+		Matrix* m = new Matrix(m_row, other.m_col);
+		for (int i = 0; i < m_row; ++i)//row
+		{
+			for (int j = 0; j < other.m_col; ++j)//col
+			{
+				(*m)(i, j) = 0;
+				for (int x = 0; x < m_col; ++x)
+				{
+					(*m)(i, j) += (*this)(i, x) * other(x, j);
+				}
+			}
+		}
+		return m;
+	}
+
+	Matrix* Transform()
+	{
+		Matrix* m = new Matrix(m_col, m_row);
+		for (int i = 0; i < m_col; ++i)
+		{
+			for (int j = 0; j < m_col; ++j)
+			{
+
+			}
+		}
+	}
+	//打印矩阵
+	void Print()
+	{
+		for (int i = 0; i < m_row; ++i)
+		{
+			for (int j = 0; j < m_col; ++j)
+			{
+				std::cout << (*this)(i, j) << "  ";
+			}
+			std::cout << "\n";
+		}
+		std::cout << "\n";
 	}
 };

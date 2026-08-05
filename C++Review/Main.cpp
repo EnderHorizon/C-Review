@@ -1,27 +1,8 @@
-#include <iostream>
-
-#include <string>
-#include<vector>
-#include<array>
-#include<random>
-#include<thread>
-#include<algorithm>
-#include<memory>//smartptr
-#include<chrono>
-
+#include"pch.h"
 #include "Expansion.h"
-
-/*
-#ifdef DEBUG
-#define LOG(x) std::cout << x << std::endl
-#else 
-#define 
-#endif
-*/
 
 int main()
 {
-	
 	std::vector<int> numlist;
 	numlist.reserve(20);
 
@@ -51,5 +32,28 @@ int main()
 	{
 		std::cout << c << ",";
 	}
+	std::cout << "\n\n";
+
+
+	//Matrix
+	std::unique_ptr<Matrix>m1 = std::make_unique<Matrix>(3, 4);
+	std::unique_ptr<Matrix>m2 = std::make_unique<Matrix>(4, 5);
+
+	std::uniform_int_distribution<int> int_dist_m(0, 10);
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 5; ++j)
+			(*m2)(i, j) = int_dist_m(gen);
+	}
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+			(*m1)(i, j) = int_dist_m(gen);
+	}
+	m1->Print();
+	m2->Print();
+
+	std::unique_ptr<Matrix> m_result((*m1) * (*m2));
+	m_result->Print();
 	std::cin.get();
 }
