@@ -310,7 +310,7 @@ public:
 		{
 			for (int j = 0; j < m_col; ++j)
 			{
-
+				(*m)(j, i) = (*this)(i, j);
 			}
 		}
 	}
